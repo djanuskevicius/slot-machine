@@ -25,7 +25,12 @@ export const updateBalance = (amount, operation) => {
 };
 
 const adjustBetAmount = (operation) => {
-  betAmount = operation === "add" ? betAmount + 1 : betAmount - 1;
+  if (operation === "add") {
+    betAmount += 1;
+  } else if (operation === "subtract" && betAmount > 1) {
+    betAmount -= 1;
+  }
+
   gameState.betAmount = betAmount;
   betAmountElement.textContent = `$${betAmount.toFixed(2)}`;
 };
