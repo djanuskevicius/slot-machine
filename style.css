@@ -1,0 +1,395 @@
+@import url("https://fonts.googleapis.com/css2?family=Jua&display=swap");
+/* Core Layout */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Jua", sans-serif;
+  background: radial-gradient(circle, #000000, #250136);
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+.interface-container {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px; /* Space between columns */
+  padding-top: 20px;
+  max-width: 1024px;
+  background-image: url("./images/slots_japanese_background.png");
+  background-position: center;
+  background-size: cover;
+  border-radius: 20px;
+}
+
+.slots-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Space between columns */
+}
+
+.col {
+  display: flex;
+  flex-direction: column-reverse;
+  position: relative;
+  overflow-y: hidden;
+  min-height: 360px;
+  width: 80px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+}
+
+/* Symbols */
+.symbol {
+  box-sizing: border-box;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  background: radial-gradient(circle, #000000, #250136);
+  border-radius: 5px;
+  transition: top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none; /* Prevent text selection during spins */
+}
+
+.bonus_symbol {
+  font-size: 40px;
+  background-color: gold;
+  animation: bonusSymbolGlow 1s infinite alternate;
+}
+
+.symbol.above-reel {
+  transform: translateY(-500%);
+}
+
+.symbol.win {
+  animation: pulse 0.4s ease 3;
+}
+
+@keyframes bonusSymbolGlow {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 1);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.symbol.removing {
+  animation: fadeOut 0.5s forwards;
+}
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 100px;
+  margin-top: 20px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0px 0px 20px 20px;
+}
+
+.bet_controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.bet_info {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  color: white;
+}
+
+#last-win,
+#balance,
+#bet-amount {
+  color: white;
+  margin-left: 4px;
+}
+
+button {
+  font-family: "Jua", sans-serif;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.3);
+  color: white;
+  border: 2px white solid;
+  border-radius: 60px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#spin-button {
+  font-size: 24px;
+  padding: 20px 50px;
+}
+#spin-button.spinning {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+#autoplay-button {
+  width: 200px;
+  padding: 10px;
+  color: #f0f0f0;
+}
+
+.bet_change_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 10px;
+  border-radius: 100%;
+}
+
+.box {
+  display: flex;
+  text-transform: uppercase;
+  color: orange;
+  min-width: 100px;
+  text-align: left;
+}
+
+.explosion-particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: black;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+/* ---------------- Slider (cross-browser) ---------------- */
+:root {
+  --track-h: 6px;
+  --thumb-size: 16px;
+  --fill: #f50; /* filled part color */
+  --track: #ccc; /* unfilled track color */
+}
+
+/* wrapper + labels */
+.slider-wrapper {
+  width: 80%;
+  margin: 16px auto 0;
+  text-align: left;
+}
+.slider-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #fff;
+  opacity: 0.9;
+}
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #fff;
+  opacity: 0.8;
+}
+#range-value {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #fff;
+}
+
+/* base range element */
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: var(--track-h);
+  border-radius: 999px;
+  outline: none;
+  background: var(--track);
+  position: relative;
+
+  /* WebKit filled track via CSS var --pct (set in JS) */
+  background: linear-gradient(var(--fill), var(--fill)) 0 0 /
+      calc(var(--pct, 0) * 1%) 100% no-repeat,
+    var(--track);
+}
+
+/* focus */
+.slider:focus-visible {
+  box-shadow: 0 0 0 4px rgba(255, 85, 0, 0.3);
+  border-radius: 8px;
+}
+
+/* ---- WebKit (Chrome/Edge/Safari) ---- */
+.slider::-webkit-slider-runnable-track {
+  height: var(--track-h);
+  background: transparent; /* we paint with background on .slider */
+  border-radius: 999px;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  border-radius: 50%;
+  background: orange;
+  border: none;
+  margin-top: calc((var(--track-h) - var(--thumb-size)) / 2);
+  transition: transform 0.12s ease;
+}
+.slider:active::-webkit-slider-thumb {
+  transform: scale(1.05);
+}
+
+/* ---- Firefox ---- */
+.slider::-moz-range-track {
+  height: var(--track-h);
+  background: var(--track);
+  border: none;
+  border-radius: 999px;
+}
+/* this is the filled portion in Firefox */
+.slider::-moz-range-progress {
+  height: var(--track-h);
+  background: var(--fill);
+  border-radius: 999px;
+}
+.slider::-moz-range-thumb {
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  border-radius: 50%;
+  background: orange;
+  border: none;
+  transition: transform 0.12s ease;
+}
+.slider:active::-moz-range-thumb {
+  transform: scale(1.05);
+}
+
+/* ---- Legacy Edge/IE (best-effort) ---- */
+.slider::-ms-track {
+  height: var(--track-h);
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+.slider::-ms-fill-lower {
+  background: var(--fill);
+  border-radius: 999px;
+}
+.slider::-ms-fill-upper {
+  background: var(--track);
+  border-radius: 999px;
+}
+.slider::-ms-thumb {
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  border-radius: 50%;
+  background: orange;
+  border: none;
+}
+
+/* ---------------- Modal ---------------- */
+.modal {
+  display: none; /* hidden by default */
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(6px); /* blur overlay */
+  background: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: flex-start;
+  opacity: 0; /* for fade */
+  transition: opacity 0.25s ease;
+  z-index: 50;
+}
+@supports not (backdrop-filter: blur(6px)) {
+  .modal {
+    background: rgba(0, 0, 0, 0.6);
+  }
+}
+
+.modal-content {
+  background: rgba(34, 34, 34, 0.8);
+  color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 360px;
+  margin-top: 60px;
+  text-align: left;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+
+  transform: translateY(-200%);
+  transition: transform 0.35s ease-out;
+}
+.modal-title {
+  margin-bottom: 8px;
+}
+
+.modal.show {
+  opacity: 1;
+}
+.modal.show .modal-content {
+  transform: translateY(0);
+}
+
+.modal-actions {
+  margin-top: 18px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.btn-secondary {
+  font-family: inherit;
+  padding: 10px 14px;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .modal,
+  .modal-content,
+  .slider::-webkit-slider-thumb,
+  .slider::-moz-range-thumb {
+    transition: none !important;
+  }
+}

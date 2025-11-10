@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Slot Machine</title>
+    <script type="module" src="./js/main.js"></script>
+    <script
+      src="https://kit.fontawesome.com/845e11cf9a.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <main>
+      <div class="interface-container">
+        <div class="slots-container">
+          <div id="col1" class="col"></div>
+          <div id="col2" class="col"></div>
+          <div id="col3" class="col"></div>
+          <div id="col4" class="col"></div>
+          <div id="col5" class="col"></div>
+          <div id="col6" class="col"></div>
+        </div>
+        <div class="controls">
+          <div class="bet_info">
+            <div class="box">BET: <span id="bet-amount"> $0.00</span></div>
+            <div class="box">BALANCE: <span id="balance"></span></div>
+            <div class="box">WIN: <span id="last-win"></span></div>
+          </div>
+          <div class="bet_controls">
+            <button class="bet_change_button" id="bet-subtract">
+              <i class="fa-solid fa-circle-minus"></i>
+            </button>
+            <button id="spin-button">
+              <i class="fa-solid fa-arrows-rotate" id="spin-button-icon"></i>
+            </button>
+            <button class="bet_change_button" id="bet-add">
+              <i class="fa-solid fa-circle-plus"></i>
+            </button>
+          </div>
+          <div class="autoplay-interface">
+            <button
+              id="autoplay-button"
+              aria-haspopup="dialog"
+              aria-controls="autoplay-modal"
+            >
+              AUTOPLAY
+            </button>
+
+            <!-- Modal -->
+            <div
+              id="autoplay-modal"
+              class="modal"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="autoplay-title"
+              aria-hidden="true"
+            >
+              <div class="modal-content" tabindex="-1">
+                <h2 id="autoplay-title" class="modal-title">
+                  Autoplay Settings
+                </h2>
+
+                <div class="slider-wrapper">
+                  <label for="range" class="slider-label"
+                    >NUMBER OF SPINS</label
+                  >
+
+                  <!-- index-based slider: 0..7 maps to [10,25,50,75,100,250,500,1000] -->
+                  <input
+                    type="range"
+                    id="range"
+                    class="slider"
+                    min="0"
+                    max="7"
+                    step="1"
+                    value="0"
+                  />
+
+                  <!-- live value readout -->
+                  <div class="value" id="range-value"></div>
+                </div>
+
+                <div class="modal-actions">
+                  <button class="btn-secondary">Apply</button>
+                  <button id="close-modal" class="btn-secondary">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <div id="explosions"></div>
+  </body>
+</html>
