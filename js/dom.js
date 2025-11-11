@@ -64,6 +64,7 @@ sliderEl.addEventListener("input", (event) => {
 autoplayButton.addEventListener("click", () => {
   if (gameState.autoplayEnabled) {
     gameState.autoplayEnabled = false;
+    gameState.autoplayCount = allowedValues[sliderEl.value];
     updateAutoplayVisual();
   } else {
     modal.style.display = "flex"; // show overlay
