@@ -3,7 +3,7 @@ import { gameState } from "./state.js";
 import { generateColumns, getRandomLayout } from "./symbols.js";
 import { checkWins } from "./logic.js";
 import { wait } from "./utils.js";
-import { updateBalance } from "./dom.js";
+import { updateBalance, updateAutoplayVisual } from "./dom.js";
 
 const { spinButton, spinButtonIcon } = gameState;
 
@@ -13,6 +13,10 @@ export const startSpin = async () => {
     return;
   }
   updateBalance(gameState.betAmount, "subtract");
+  if (gameState.autoplayEnabled) {
+    gameState.autoplayCount--;
+    updateAutoplayVisual();
+  }
   let currentSymbols = document.querySelectorAll(".symbol");
 
   spinButton.disabled = true;
@@ -33,9 +37,3 @@ export const startSpin = async () => {
 };
 
 spinButton.addEventListener("click", startSpin);
-gameState.autoplayButton.addEventListener("click", () => {
-  gameState.autoplayEnabled = !gameState.autoplayEnabled;
-  console.log(
-    `Autoplay is now ${gameState.autoplayEnabled ? "enabled" : "disabled"}`
-  );
-});

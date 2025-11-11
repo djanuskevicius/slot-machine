@@ -12,7 +12,7 @@ const closeModal = document.getElementById("close-modal");
 
 const allowedValues = [10, 25, 50, 75, 100, 250, 500, 1000];
 
-let { balance, betAmount, autoplayButton } = gameState;
+let { balance, betAmount, autoplayButton, autoplayApplyButton } = gameState;
 
 balanceElement.textContent = ` $${balance.toFixed(2)}`;
 betAmountElement.textContent = `$${betAmount.toFixed(2)}`;
@@ -39,6 +39,16 @@ export const updateLastWin = (amount) => {
   lastWinElement.textContent = ` $${amount.toFixed(2)}`;
 };
 
+export const updateAutoplayVisual = () => {
+  if (gameState.autoplayEnabled) {
+    autoplayButton.classList.add("btn-enabled");
+    autoplayButton.textContent = `AUTOPLAY (${gameState.autoplayCount})`;
+  } else {
+    autoplayButton.classList.remove("btn-enabled");
+    autoplayButton.textContent = `AUTOPLAY`;
+  }
+};
+
 betAddButton.addEventListener("click", () => {
   adjustBetAmount("add");
 });
@@ -52,8 +62,33 @@ sliderEl.addEventListener("input", (event) => {
 });
 
 autoplayButton.addEventListener("click", () => {
-  modal.style.display = "flex"; // show overlay
-  setTimeout(() => modal.classList.add("show"), 10); // trigger slide-in
+  if (gameState.autoplayEnabled) {
+    gameState.autoplayEnabled = false;
+    updateAutoplayVisual();
+  } else {
+    modal.style.display = "flex"; // show overlay
+    setTimeout(() => modal.classList.add("show"), 10); // trigger slide-in
+  }
+});
+
+autoplayButton.addEventListener("mouseenter", () => {
+  if (gameState.autoplayEnabled) {
+    autoplayButton.textContent = "DISABLE AUTOPLAY";
+  }
+});
+
+autoplayButton.addEventListener("mouseleave", () => {
+  if (gameState.autoplayEnabled) {
+    autoplayButton.textContent = `AUTOPLAY (${gameState.autoplayCount})`;
+  }
+});
+
+autoplayApplyButton.addEventListener("click", () => {
+  gameState.autoplayEnabled = true;
+  modal.classList.remove("show");
+  setTimeout(() => (modal.style.display = "none"), 400);
+
+  updateAutoplayVisual();
 });
 
 closeModal.addEventListener("click", () => {

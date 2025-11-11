@@ -17,8 +17,6 @@ export const getRandomLayout = () => {
 
 export const generateColumns = () => {
   const { columns, layout } = gameState;
-  console.log("generating columns");
-  console.log(columns);
 
   [...columns].forEach((col, colIndex) => {
     while (col.children.length < layout[colIndex]) {

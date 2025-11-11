@@ -384,6 +384,16 @@ button {
   cursor: pointer;
 }
 
+.btn-enabled {
+  border-color: greenyellow;
+  color: greenyellow;
+}
+
+.btn-enabled:hover {
+  border-color: red;
+  color: red;
+}
+
 /* reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .modal,

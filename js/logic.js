@@ -2,13 +2,12 @@ import { symbols, generateColumns } from "./symbols.js";
 import { wait } from "./utils.js";
 import { createExplosion } from "./effects.js";
 import { gameState } from "./state.js";
-import { updateBalance, updateLastWin } from "./dom.js";
+import { updateBalance, updateLastWin, updateAutoplayVisual } from "./dom.js";
 
 // Main win-checking function: scans columns for consecutive symbols and triggers tumble/bonus logic
 
 export const checkWins = async (startSpin) => {
   let { columns, spinButton, spinButtonIcon } = gameState;
-  console.log("checking wins");
   gameState.winningSymbols = [];
 
   symbols.forEach((symbol) => {
@@ -39,23 +38,19 @@ export const checkWins = async (startSpin) => {
   });
 
   if (gameState.winningSymbols.length !== 0) {
-    console.log(gameState.winningSymbols);
-
     calculateWinMultiplier();
     await wait(1000);
     tumble(startSpin);
   } else if (gameState.autoplayEnabled) {
-    console.log("no wins");
     setTimeout(() => {
       if (gameState.autoplayEnabled) {
-        if (gameState.autoplayCount > 0) {
-          gameState.autoplayCount--;
-          console.log(`Autoplay spins left: ${gameState.autoplayCount}`);
-
+        if (gameState.autoplayCount > 1) {
           calculateWinnings();
           startSpin();
         } else {
           calculateWinnings();
+          gameState.autoplayEnabled = false;
+          updateAutoplayVisual();
           spinButton.disabled = false;
           spinButton.classList.remove("spinning");
           spinButtonIcon.classList.remove("fa-spin");
@@ -71,7 +66,6 @@ export const checkWins = async (startSpin) => {
 };
 
 const tumble = async (startSpin) => {
-  console.log("tumbling");
   let { winningSymbols } = gameState;
   const allMatches = [];
 
@@ -90,7 +84,6 @@ const tumble = async (startSpin) => {
       match.classList.add("removing");
 
       await wait(850);
-      console.log("removing matches");
 
       match.remove();
     })
@@ -112,30 +105,12 @@ const calculateWinMultiplier = () => {
   });
 
   gameState.winMultiplier = multiplier;
-  console.log(`Win Multiplier: ${gameState.winMultiplier}`);
 };
 
 const calculateWinnings = () => {
   const { betAmount, winMultiplier } = gameState;
-  console.log(
-    `Calculating winnings with bet amount: $${betAmount} and win multiplier: ${winMultiplier}`
-  );
   const winnings = betAmount * winMultiplier;
   updateBalance(winnings, "add");
   updateLastWin(winnings);
-  console.log(`Winnings: $${winnings}`);
   gameState.winMultiplier = 0; // Reset multiplier after payout
-};
-
-const autoplay = (startSpin) => {
-  if (gameState.autoplayCount > 0) {
-    gameState.autoplayCount--;
-    console.log(`Autoplay spins left: ${gameState.autoplayCount}`);
-
-    calculateWinnings();
-    startSpin();
-  } else {
-    gameState.autoplayEnabled = false;
-    console.log("Autoplay finished");
-  }
 };
